@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load compress %}
+    {% load static %}
+    {% compress css %}
+    <link href="{% static 'css/output.css' %}" type="text/css" rel="stylesheet">
+    {% endcompress %}
+    <link href="{% static 'css/styles.css' %}" type="text/css" rel="stylesheet"/>
+    <link href="{% static 'ApexChart/dist/apexcharts.css' %}" type="text/css" rel="stylesheet">
+    <link href="{% static 'sweetalert2/sweetalert2.min.css' %}" type="text/css" rel="stylesheet">
+    <link rel="icon" href="{% static 'media/icons/Logo.svg' %}" type="image/icon type">
+    <link href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css" type="text/css" rel="stylesheet">
+    <title>SENTIGOVT24 | {% block title %}{% endblock %}</title>
+</head>
+
+<body class="bg-[#EFEFEF]">
+    <!-- Start Header Navbar -->
+    <!-- Jika Member, Admin dan Super Admin -->
+    <header class="z-40 h-[67px] fixed flex justify-center sm:justify-end items-center w-screen bg-white border-b-2 border-gray-300">
+        <div class="flex items-center sm:hidden">
+            <div class="absolute left-3">
+                <button type="button" onclick="toggleMenuMobile()">
+                    <img src="{% static 'media/icons/menu.svg' %}" alt="Menu">
+                </button>
+            </div>
+            <div {% if title == 'Dashboard' or title == 'History' or result == 'true' %}  class="absolute right-3" {% endif %} class="hidden">
+                <button type="button" onclick="toggleRankingMobile()">
+                    <img src="{% static 'media/icons/rankingBacapres.svg' %}" alt="Ranking Bacapres">
+                </button>
+            </div>
+            <a href="{% url 'home' %}" class="font-[BigShouldersDisplay-Bold] text-[30px] text-black hover:opacity-75 transition-opacity">SENTIGOVT24</a>
+        </div>
+        <div class="sm:mr-10 md:mr-20 flex items-center">
+            <div class="hidden sm:block">
+                {% if auth_user %}
+                <a href="{% url 'account:logout' %}"><button class="font-[Poppins-Semibold] bg-[#7B5BFF] text-[13px] px-10 py-3 rounded-lg text-white">Log Out</button></a>
+                {% else %}
+                <a href="{% url 'account:login' %}"><button class="font-[Poppins-Semibold] bg-[#7B5BFF] text-[13px] px-10 py-3 rounded-lg text-white">Log In</button></a>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+    <!-- Start Header Navbar -->
+    <!-- Start  Side Navbar-->
+    <aside class="fixed top-0 left-0 z-40 w-0 h-screen sm:hidden" id="menuMobile">
+        <div class="bg-[#ffffff] overflow-y-auto h-full">
+            <header class="z-40 h-[67px] flex items-center bg-white border-b-2 border-gray-300">
+                <div class="flex items-center justify-center w-screen pl-10">
+                    <a href="{% url 'home' %}" class="font-[BigShouldersDisplay-Bold] text-[30px] text-black hover:opacity-75 transition-opacity">SENTIGOVT24</a>
+                </div>
+                <div class="mr-5">
+                    <button type="button" onclick="toggleMenuMobile();closeModal();">
+                        <img src="{% static 'media/icons/close.svg' %}" alt="Close">
+                    </button>
+                </div>
+            </header>
+            <div class="flex justify-center mt-5 items-center">
+                {% if auth_user %}
+                <a href="{% url 'account:logout' %}"><button class="font-[Poppins-Semibold] bg-[#7B5BFF] text-[13px] w-[90vw] py-3 rounded-lg text-white">Log Out</button></a>
+                {% else %}
+                <a href="{% url 'account:login' %}"><button class="font-[Poppins-Semibold] bg-[#7B5BFF] text-[13px] w-[90vw] py-3 rounded-lg text-white">Log In</button></a>
+                {% endif %}
+            </div>
+            <ul class="space-y-2 font-[poppins-medium] text-[12px] flex flex-col mx-5">
+                <li class="flex flex-col items-center mt-3">
+                    <div class="w-[150px] h-[150px] mt-5 rounded-full overflow-hidden">
+                        <div class="w-[100%] h-[100%] relative rounded-full overflow-hidden">
+                            <a {% if auth_user %} href="{% url 'account:profile' %}" {% endif %}>
+                                <img {% if not auth_user.is_authenticated %} src="{% static 'media/icons/ProfileDefault.svg' %}" {% else %} src="{{auth_user.avatar.url}}" {% endif %} alt="GambarProfile" class="w-[100%] h-[100%] absolute top-1/2 left-1/2 transform translate-x-[-50%] translate-y-[-50%]">
+                            </a>
+                        </div>
+                    </div>
+                    <a {% if auth_user %} href="{% url 'account:profile' %}" {% endif %} class="text-center">
+                        <div class="font-[Poppins-semibold] text-[15px] text-black mt-3">{% if auth_user %} {{auth_user.first_name}} {% else %} Guest {% endif %}</div>
+                        <div class="font-[poppins-regular] text-[12px] text-black mb-9">{% if auth_user %} {{auth_user.role}} {% else %} Guest {% endif %}</div>
+                    </a>
+                </li>
+                <li>
+                    <a {% if active_page == 'dashboard' %} class="mt-2 hover:bg-[#E9E9E9] flex items-center p-3 text-gray-900 rounded-lg bg-[#E9E9E9]" {% endif %} href="{% url 'dashboard' %}" class="mt-2 hover:bg-[#434343] flex items-center p-3 text-gray-900 rounded-lg">
+                        <img class="flex-shrink-0 w-6 h-6" src="{% static 'media/icons/dashboardMobile.svg' %}" alt="DashboardMobile"/>
+                        <span class="ml-3 text-black">Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a {% if active_page == 'manual search' %} class="hover:bg-[#E9E9E9] flex items-center p-3 text-gray-900 rounded-lg bg-[#E9E9E9]" {% endif %} class="hover:bg-[#E9E9E9] flex items-center p-3 text-gray-900 rounded-lg" href="{% url 'sentiment:manualSearch' %}">
+                        <img class="flex-shrink-0 w-6 h-6" src="{% static 'media/icons/analysisManualMobile.svg' %}" alt="Manual Search Mobile"/>
+                        <span class="ml-3 text-black">Manual Search</span>
+                    </a>
+                </li>
+                {% if auth_user.role == 'MEMBER' or auth_user.role == 'ADMIN' or auth_user.role == "SUPERADMIN" %}
+                <li>
+                    <a {% if active_page == 'history' %} class="hover:bg-[#E9E9E9] flex items-center p-3 text-gray-900 rounded-lg bg-[#E9E9E9]" {% endif %} class="hover:bg-[#E9E9E9] flex items-center p-3 text-gray-900 rounded-lg" href="{% url 'sentiment:getHistoryList' %}">
+                        <img class="flex-shrink-0 w-6 h-6" src="{% static 'media/icons/historyMobile.svg' %}" alt="History Mobile"/>
+                        <span class="ml-3 text-black">History</span>
+                    </a>
+                </li>
+                {% endif %}
+                {% if auth_user.role == 'ADMIN' or auth_user.role == "SUPERADMIN" %}
+                <li>
+                    <a {% if active_page == 'user management' %} class="hover:bg-[#E9E9E9] flex items-center p-3 text-gray-900 rounded-lg bg-[#E9E9E9]" {% endif %} class="hover:bg-[#E9E9E9] flex items-center p-3 text-gray-900 rounded-lg"  href="{% url 'account:userManagement' %}">
+                        <img class="flex-shrink-0 w-6 h-6" src="{% static 'media/icons/userMobile.svg' %}" alt="User Management Mobile"/>
+                        <span class="ml-3 text-black">User Management</span>
+                    </a>
+                </li>
+                <li>
+                    <a {% if active_page == 'bacapres management' %} class="hover:bg-[#E9E9E9] flex items-center p-3 text-gray-900 rounded-lg bg-[#E9E9E9] mb-5" {% endif %} class="hover:bg-[#E9E9E9] flex items-center p-3 text-gray-900 rounded-lg mb-5"  href="{% url 'bacapres:bacapres_list' %}">
+                        <img class="flex-shrink-0 w-6 h-6" src="{% static 'media/icons/bacapresMobile.svg' %}" alt="Bacapres Management Mobile"/>
+                        <span class="ml-3 text-black">Bacapres Management</span>
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </aside>
+    <aside class="fixed top-0 left-0 z-40 hidden sm:block sm:w-15 md:w-60 h-screen transition-all" aria-label="Sidebar">
+        <div class="bg-[#222222] px-2 py-2 overflow-y-auto h-full">
+            <ul class="space-y-2 font-[poppins-medium] text-[12px] flex flex-col">
+                <img class="mb-6 md:hidden" src="{% static 'media/icons/Logo.svg' %}" alt="Logo">
+                <li class="text-center mb-10 border-b-2 hidden md:block">
+                    <a href="{% url 'home' %}" class="font-[BigShouldersDisplay-Bold] text-[30px] text-white hover:opacity-75 transition-opacity">SENTIGOVT24</a>
+                </li>
+                <li class="flex flex-col items-center mt-9">
+                    <div class="sm:w-[40px] sm:h-[40px] md:w-[150px] md:h-[150px] md:mt-5 rounded-full overflow-hidden">
+                        <div class="w-[100%] h-[100%] relative rounded-full overflow-hidden">
+                            <a {% if auth_user %} href="{% url 'account:profile' %}" {% endif %}>
+                                <img {% if not auth_user.is_authenticated %} src="{% static 'media/icons/ProfileDefault.svg' %}" {% else %} src="{{auth_user.avatar.url}}" {% endif %} alt="GambarProfile" class="w-[100%] h-[100%] absolute top-1/2 left-1/2 transform translate-x-[-50%] translate-y-[-50%]">
+                            </a>
+                        </div>
+                    </div>
+                    <a {% if auth_user %} href="{% url 'account:profile' %}" {% endif %} class="text-center">
+                        <div class="font-[Poppins-semibold] text-[15px] text-white mt-3 hidden md:block">{% if auth_user %} {{auth_user.first_name}} {% else %} Guest {% endif %}</div>
+                        <div class="font-[poppins-regular] text-[12px] text-white mb-9 hidden md:block">{% if auth_user %} {{auth_user.role}} {% else %} Guest {% endif %}</div>
+                    </a>
+                </li>
+                <li>
+                    <a {% if active_page == 'dashboard' %} class="mt-2 hover:bg-[#434343] flex items-center p-3 text-gray-900 rounded-lg bg-[#434343]" {% endif %} href="{% url 'dashboard' %}" class="mt-2 hover:bg-[#434343] flex items-center p-3 text-gray-900 rounded-lg">
+                        <img class="flex-shrink-0 w-6 h-6" src="{% static 'media/icons/dashboard.svg' %}" alt="Dashboard"/>
+                        <span class="ml-3 text-white hidden md:block">Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a {% if active_page == 'manual search' %} class="hover:bg-[#434343] flex items-center p-3 text-gray-900 rounded-lg bg-[#434343]" {% endif %} class="hover:bg-[#434343] flex items-center p-3 text-gray-900 rounded-lg" href="{% url 'sentiment:manualSearch' %}">
+                        <img class="flex-shrink-0 w-6 h-6" src="{% static 'media/icons/analysisManual.svg' %}" alt="Manual Search"/>
+                        <span class="ml-3 text-white hidden md:block">Manual Search</span>
+                    </a>
+                </li>
+                {% if auth_user.role == 'MEMBER' or auth_user.role == 'ADMIN' or auth_user.role == "SUPERADMIN" %}
+                <li>
+                    <a {% if active_page == 'history' %} class="hover:bg-[#434343] flex items-center p-3 text-gray-900 rounded-lg bg-[#434343]" {% endif %} class="hover:bg-[#434343] flex items-center p-3 text-gray-900 rounded-lg" href="{% url 'sentiment:getHistoryList' %}">
+                        <img class="flex-shrink-0 w-6 h-6" src="{% static 'media/icons/history.svg' %}" alt="History"/>
+                        <span class="ml-3 text-white hidden md:block">History</span>
+                    </a>
+                </li>
+                {% endif %}
+                {% if auth_user.role == 'ADMIN' or auth_user.role == "SUPERADMIN" %}
+                <li>
+                    <a {% if active_page == 'user management' %} class="hover:bg-[#434343] flex items-center p-3 text-gray-900 rounded-lg bg-[#434343]" {% endif %} class="hover:bg-[#434343] flex items-center p-3 text-gray-900 rounded-lg"  href="{% url 'account:userManagement' %}">
+                        <img class="flex-shrink-0 w-6 h-6" src="{% static 'media/icons/user.svg' %}" alt="User Management"/>
+                        <span class="ml-3 text-white hidden md:block">User Management</span>
+                    </a>
+                </li>
+                <li>
+                    <a {% if active_page == 'bacapres management' %} class="hover:bg-[#434343] flex items-center p-3 text-gray-900 rounded-lg bg-[#434343]" {% endif %} class="hover:bg-[#434343] flex items-center p-3 text-gray-900 rounded-lg"  href="{% url 'bacapres:bacapres_list' %}">
+                        <img class="flex-shrink-0 w-6 h-6" src="{% static 'media/icons/bacapres.svg' %}" alt="Bacapres Management"/>
+                        <span class="ml-3 text-white hidden md:block">Bacapres Management</span>
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </aside>
+    <!-- End  Side Navbar-->
+    <!-- Start Content -->
+    {% block content %}{% endblock %}
+    <!-- End Content -->
+    <script src="{% static 'js/alpine.js' %}"></script>
+    <script src="{% static 'ApexChart/dist/apexcharts.js' %}"></script>
+    <script src="{% static 'js/activePage.js' %}"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="{% static 'sweetalert2/sweetalert2.all.min.js' %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
+</body>
+
+</html>

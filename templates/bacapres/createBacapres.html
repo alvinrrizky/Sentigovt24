@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}
+Bacapres Management
+{% endblock %}
+
+{% block content %}
+<div class="sm:pl-[100px] md:pl-[280px] px-6 pb-6 pt-24 ">
+    <div class="flex flex-col gap-5">
+        <!-- Start Header Create Bacapres Management -->
+        <header class="bg-white py-6 px-10 rounded-xl h-fit">
+            <div class="font-[poppins-medium] text-[20px] sm:text-[40px] text-[#1E1D4C]">Bacapres Management</div>
+            <hr class="border-[#C2C2C2] my-2 sm:my-5">
+            <div class="font-[poppins-regular] text-[#1E1D4C] text-[15px]">Create Bacapres</div>
+        </header>
+        <!-- End Header Create Bacapres Management -->
+        <!-- Start Form Create Bacapres -->
+        <section class="bg-white p-6 rounded-xl h-fit">
+            <form id="createBacapres" action="{% url 'bacapres:create_bacapres' %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <!-- Start Form Create Foto Bacapres -->
+                <div id="photoProfile">
+                    <div class="font-[poppins-semibold] text-[12px] text-[#1E1D4C] mb-3">Display Picture</div>
+                    <div class="flex flex-col md:flex-row sm:items-start items-center justify-between md:px-5 md:py-5">
+                        <div class="flex flex-col sm:flex-row items-center gap-5 mb-5 sm:mb-0">
+                            <img src="{% static 'media/icons/ProfileDefault.svg' %}" alt="ProfileEdit">
+                            <div class="text-center sm:text-justify font-[poppins-semibold] text-[#1E1D4C]">Name Bakal Calon Presiden</div>
+                        </div>
+                        <div class="w-[100%] md:w-[50%] mb-5 md:mb-0">
+                            <label class="block mb-2 text-sm font-medium text-gray-900" for="file_input">Upload Image Profile</label>
+                            <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none" aria-describedby="file_input_help" name="avatar" id="file_input" type="file">
+                            <p class="mt-1 text-sm text-gray-500" id="file_input_help">PNG, JPG or GIF</p>
+                            <div id="avatar_err" class="font-bold text-red-500 block" ></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Form Create Foto Bacapres -->
+                <!-- Start Create Data Bacapres -->
+                <div class="flex flex-col gap-5">
+                    <div class="relative">
+                        <label class="text-gray-700 tracking-wide text-[15px]">Name</label>
+                        <input class=" w-full text-base px-4 py-2 border-2 border-gray-300 focus:border-blue-500 block rounded-lg" type="text" name="name" placeholder="Masukan Nama" required>
+                        <div id="name_err" class="font-bold text-red-500 block" ></div>
+                    </div>
+                    <div class="relative">
+                        <label class="text-gray-700 tracking-wide text-[15px]">Keyword</label><label class="text-gray-700 tracking-wide text-[15px]"><b> (Jika keyword lebih 1, gunakan separator ";" tanpa spasi. Misal: Joko Widodo;Jokowi)</b></label>
+                        <input type="text" aria-label="keyword" class="border-2 border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full px-4 py-2" placeholder="Masukan Keyword" name="keyword" required>
+                        <div id="keyword_err" class="font-bold text-red-500 block" ></div>
+                    </div>
+                    <div class="relative">
+                        <label class="text-gray-700 tracking-wide text-[15px]">Description</label>
+                        <textarea type="textarea" aria-label="description" class="border-2 border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full px-4 py-2" name="desc"></textarea>
+                    </div>
+                </div>
+                <!-- End Create Data Bacapres -->
+                <div class="flex justify-end items-center gap-5 mt-8">
+                    <a href="{% url 'bacapres:bacapres_list' %}" class="font-bold text-[#1E1D4C]">Discard</a>
+                    <button id="saveCreateBacapres" type="submit" class="font-medium text-sm bg-[#7B5BFF] hover:bg-[#7054E0] text-[13px] px-10 py-3 rounded-lg text-white transition-all duration-500">Save</button>
+                </div>
+            </form>
+        </section>
+        <!-- End Form Create Bacapres -->
+        <!-- Start Footer Bacapres Management -->
+        <footer class="font-[poppins-regular] text-[12px] text-[#1E1D4C] ml-5 mr-5 flex justify-end">
+            Copyright &#169; 2023, KoTA 105
+        </footer>
+        <!-- End Footer Bacapres Management -->
+    </div>
+</div>
+<script defer  src="{% static 'js/popupSweetAlert2.js' %}?v={{ STATICFILES_TIMESTAMP }}"></script>
+{% endblock %}

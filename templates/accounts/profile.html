@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}
+Profile
+{% endblock %}
+
+{% block content %}
+<div class="sm:pl-[100px] md:pl-[280px] px-6 pb-6 pt-24 ">
+    <div class="flex flex-col gap-5">
+        <!-- Start Header Profile -->
+        <header class="bg-white py-6 px-10 rounded-xl h-fit">
+            <div class="font-[poppins-semibold] text-[20px] sm:text-[40px] text-[#1E1D4C]">Personal Data</div>
+            <hr class="border-[#C2C2C2] my-2 sm:my-5">
+        </header>
+        <!-- End Header Profile -->
+        <!-- Start Data Profile -->
+        <div class="bg-white p-6 rounded-xl h-fit">
+            <form id="editProfile" action="{% url 'account:profile' %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div id="photoProfile">
+                    <div class="font-[poppins-semibold] text-[12px] text-[#1E1D4C] mb-3">Display Picture</div>
+                    <div class="flex flex-col md:flex-row sm:items-start items-center justify-between md:px-5 md:py-5">
+                        <div class="flex flex-col sm:flex-row items-center gap-5 sm:mb-0 py-5 md:py-0">
+                            <div class="w-[100px] h-[100px] rounded-full overflow-hidden">
+                                <div class="w-[100%] h-[100%] relative rounded-full overflow-hidden">
+                                    <img src="{{user.avatar.url}}" alt="GambarProfile" class="w-[100%] h-[100%] absolute top-1/2 left-1/2 transform translate-x-[-50%] translate-y-[-50%]">
+                                </div>
+                            </div>
+                            <div class="font-[poppins-semibold] text-[#1E1D4C]">{{user.first_name}}</div>
+                        </div>
+                        <div class="w-[100%] md:w-[50%] mb-5 md:mb-0">
+                            <label class="block mb-2 text-sm font-medium text-gray-900" for="file_input">Upload Image Profile</label>
+                            <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none" aria-describedby="file_input_help" id="file_input" name="avatar" value="{{user.avatar.url}}" type="file">
+                            <p class="mt-1 text-sm text-gray-500" id="file_input_help">PNG, JPG or GIF</p>
+                            <div id="avatar_err" class="font-bold text-red-500 block" ></div>
+                        </div>
+                    </div>
+                </div>
+                <hr class="border-[#C2C2C2] my-2">
+                <div id="personalInformation">
+                    <div class="font-[poppins-semibold] text-[12px] text-[#1E1D4C] mb-3 py-2">Personal Information</div>
+                    <div class="flex flex-col gap-5">
+                        <div class="relative">
+                            <label class="text-gray-700 tracking-wide text-[15px]">Name</label>
+                            <input class=" w-full text-base px-4 py-2 border-2 border-gray-300 focus:border-blue-500 block rounded-lg" type="text" name="first_name" placeholder="Masukan Nama" value="{{user.first_name}}" required>
+                            <div id="name_err" class="font-bold text-red-500 block" ></div>
+                        </div>
+                        <div class="relative">
+                            <label class="text-gray-700 tracking-wide text-[15px]">Email</label>
+                            <input type="email" aria-label="disabled-email" class="bg-white border-2 border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full px-4 py-2 cursor-not-allowed" name="email" value="{{user.email}}" required disable readonly>
+                        </div>
+                    </div>
+                </div>
+            <div class="flex justify-end items-center gap-5 mt-5">
+                <a href="{% url 'dashboard' %}" class="font-bold text-[#1E1D4C]">Discard</a>
+                <button id="saveEdit" type="submit" class="font-medium text-sm bg-[#7B5BFF] hover:bg-[#7054E0] text-[13px] px-10 py-3 rounded-lg text-white transition-all duration-500">Save</button>
+            </div>
+            </form>
+            <div class="mt-6">
+                <button id="popup-password" onclick="changePassword()" type="button" class="font-medium text-sm bg-[#7B5BFF] hover:bg-[#7054E0] text-[13px] px-5 py-3 rounded-lg text-white transition-all duration-500">Change Password</button>
+            </div>
+            <div class="popup" id="changePassword">
+                <div class="overlay fixed top-0 left-0 w-[100vw] h-[100vh] z-[1] hidden"></div>
+                <div class="content rounded-2xl fixed top-1/2 left-1/2 bg-white z-[2] py-[20px] px-[50px] sm:py-[50px] sm:px-[80px] box-border transform -translate-x-1/2 -translate-y-1/2 scale-0 shadow-2xl border-2">
+                    <button type="button" class="absolute right-[20px] top-[20px] w-[30px] h-[30px] bg-gradient-to-br from-purple-500 via-indigo-500 to-blue-500 text-white text-[25px] font-[600] pl-[3px] rounded-full" onclick="changePassword(); closeModal();"><img src="{% static 'media/icons/close.svg' %}" alt="close"/></button>
+                    <div class="font-[poppins-semibold] text-[12px] text-[#1E1D4C] mb-3 py-2">Change Password</div>
+                    <form class="flex flex-col justify-center" id="change-password" action="{% url 'account:changePassword' %}" method="post">
+                        {% csrf_token %}
+                        <div class="mb-5">
+                            <label class="text-gray-700 tracking-wide text-[15px]">Current Password</label>
+                            <input type="password" id="change-password-lama" aria-label="change-password-lama" class="border-2 border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 block px-4 py-2 sm:w-[400px] md:w-[500px]" name="old_password" placeholder="Masukan Password Lama">
+                            <div id="old_password_err" class="font-bold text-red-500 block" ></div>
+                        </div>
+                        <div class="mb-5">
+                            <label class="text-gray-700 tracking-wide text-[15px]">New Password</label>
+                            <input type="password" id="change-password-baru" aria-label="change-password-baru" class="border-2 border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 block px-4 py-2 sm:w-[400px] md:w-[500px]" name="new_password1" placeholder="Masukan Password Terbaru">
+                            <div id="new_password1_err" class="font-bold text-red-500 block" ></div>
+                        </div>
+                        <div>
+                            <label class="text-gray-700 tracking-wide text-[15px]">Confirm New Password</label>
+                            <input type="password" id="confirm-password-baru" aria-label="confirm-password-baru" class="border-2 border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 block px-4 py-2 sm:w-[400px] md:w-[500px]" name="new_password2" placeholder="Masukan Konfirmasi Password Terbaru">
+                            <div id="new_password2_err" class="font-bold text-red-500 block" ></div>
+                        </div>
+                        <button id="saveChangePassword" type="submit" class="mt-5 font-medium text-sm bg-[#7B5BFF] hover:bg-[#7054E0] text-[13px] px-5 py-3 rounded-lg text-white transition-all duration-500 text-center">Save Change Password</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- End Data Profile -->
+        <!-- Start Footer -->
+        <footer class="font-[poppins-regular] text-[12px] text-[#1E1D4C] ml-5 mr-5 flex justify-end">
+            Copyright &#169; 2023, KoTA 105
+        </footer>
+        <!-- End Footer -->
+    </div>
+</div>
+<script src="{% static 'js/scriptsProfile.js' %}?v={{ STATICFILES_TIMESTAMP }}"></script>
+{% endblock %}

@@ -1,0 +1,123 @@
+@font-face {
+    font-family: 'BigShouldersDisplay-Bold';
+    src: url('../fonts/BigShouldersDisplay/BigShouldersDisplay-Bold.ttf');
+    src: url('../fonts/BigShouldersDisplay/BigShouldersDisplay-Bold.ttf') format('ttf'),
+        url('../fonts/BigShouldersDisplay/BigShouldersDisplay-Bold.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Poppins-SemiBold';
+    src: url('../fonts/Poppins/Poppins-SemiBold.otf');
+    src: url('../fonts/Poppins/Poppins-SemiBold.otf') format('otf'),
+        url('../fonts/Poppins/Poppins-SemiBold.otf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Poppins-Medium';
+    src: url('../fonts/Poppins/Poppins-Medium.otf');
+    src: url('../fonts/Poppins/Poppins-Medium.otf') format('otf'),
+        url('../fonts/Poppins/Poppins-Medium.otf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Poppins-Regular';
+    src: url('../fonts/Poppins/Poppins-Regular.otf');
+    src: url('../fonts/Poppins/Poppins-Regular.otf') format('otf'),
+        url('../fonts/Poppins/Poppins-Regular.otf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Poppins-light';
+    src: url('../fonts/Poppins/Poppins-Light.otf');
+    src: url('../fonts/Poppins/Poppins-Light.otf') format('otf'),
+        url('../fonts/Poppins/Poppins-Light.otf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Poppins-Bold';
+    src: url('../fonts/Poppins/Poppins-Bold.otf');
+    src: url('../fonts/Poppins/Poppins-Bold.otf') format('otf'),
+        url('../fonts/Poppins/Poppins-Bold.otf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Inter-Semibold';
+    src: url('../fonts/Inter/Inter-SemiBold.ttf');
+    src: url('../fonts/Inter/Inter-SemiBold.ttf') format('ttf'),
+        url('../fonts/Inter/Inter-SemiBold.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Inter-Regular';
+    src: url('../fonts/Inter/Inter-Regular.ttf');
+    src: url('../fonts/Inter/Inter-Regular.ttf') format('ttf'),
+        url('../fonts/Inter/Inter-Regular.ttf') format('truetype');
+}
+
+.popup.active .overlay {
+    display: block;
+}
+
+.popup.active .content {
+    transition: all 300ms ease-in-out;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.footerBackground {
+    background: #6100FF;
+    background: linear-gradient(38deg, #590f74 0%, rgb(37, 16, 117) 59%, #044f21 100%);
+}
+
+.to-top {
+    background: linear-gradient(38deg, #ce64fc 100%, rgb(123, 94, 239) 20%, #538bde 0%);
+}
+
+.to-top.active {
+    bottom: 32px;
+    pointer-events: auto;
+    opacity: 1;
+}
+
+.activeTren {
+    background-color: #ffffff;
+    color: #1E1D4C;
+}
+
+.activePagination,
+.activePagination:hover {
+    background-color: gray;
+    color: #ffffff;
+}
+
+/* Start Multi Select */
+[x-cloak] {
+    display: none;
+}
+
+.svg-icon {
+    width: 1em;
+    height: 1em;
+}
+
+.svg-icon path,
+.svg-icon polygon,
+.svg-icon rect {
+    fill: #333;
+}
+
+.svg-icon circle {
+    stroke: #4691f6;
+    stroke-width: 1;
+}
+
+/* End Multi Select */
+
+.activeMenuMobile {
+    width: 100vw;
+    transition: 0.1s ease-in-out;
+}
+
+.activeMenuHome {
+    height: fit-content;
+    transition: 0.1s ease-in-out;
+}

@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}
+User Management
+{% endblock %}
+
+{% block content %}
+<div class="sm:pl-[100px] md:pl-[280px] px-6 pb-6 pt-24 ">
+    <div class="flex flex-col gap-5">
+        <!-- Start Header User -->
+        <header class="bg-white py-6 px-10 rounded-xl h-fit">
+            <div class="font-[poppins-medium] text-[20px] sm:text-[40px] text-[#1E1D4C]">User Management</div>
+            <hr class="border-[#C2C2C2] my-2 sm:my-5">
+            <div class="font-[poppins-regular] text-[#1E1D4C] text-[15px] mb-5 mt-4">Edit User</div>
+        </header>
+        <!-- End Header User -->
+        <!-- Start Data User -->
+        <div class="bg-white p-6 rounded-xl h-fit">
+            <form id="updateRole" action="" method="POSt" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div id="photoProfile">
+                    <div class="font-[poppins-semibold] text-[12px] text-[#1E1D4C] mb-3">Display Picture</div>
+                    <div class="flex flex-col sm:flex-row items-center justify-between px-5 md:py-5">
+                        <div class="flex flex-col sm:flex-row items-center gap-5 sm:mb-0 py-5 md:py-0">
+                            <div class="w-[100px] h-[100px] rounded-full overflow-hidden">
+                                <div class="w-[100%] h-[100%] relative rounded-full overflow-hidden">
+                                    <img src="{{user.avatar.url}}" alt="GambarProfile" class="w-[100%] h-[100%] absolute top-1/2 left-1/2 transform translate-x-[-50%] translate-y-[-50%]">
+                                </div>
+                            </div>
+                            <div class="font-[poppins-semibold] text-[#1E1D4C]">{{user.first_name}}</div>
+                        </div>
+                    </div>
+                </div>
+                <hr class="border-[#C2C2C2] my-2">
+                <div id="personalInformation">
+                    <div class="font-[poppins-semibold] text-[12px] text-[#1E1D4C] mb-3 py-2">User Information</div>
+                    <div class="flex flex-col gap-5">
+                        <div class="relative">
+                            <label class="text-gray-700 tracking-wide text-[15px]">Name</label>
+                            <input class="bg-gray-100 w-full text-base px-4 py-2 border-2 border-gray-300 focus:border-blue-500 block rounded-lg cursor-not-allowed" type="text" name="name" placeholder="Masukan Nama" name="first_name" value="{{user.first_name}}" disabled>
+                        </div>
+                        <div class="relative">
+                            <label class="text-gray-700 tracking-wide text-[15px]">Email</label>
+                            <input type="text" id="disabled-email" aria-label="disabled-email" class="bg-gray-100 border-2 border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full px-4 py-2 cursor-not-allowed" name="email" value="{{user.email}}" disabled>
+                        </div>
+                        <!-- Dropdown Select Status -->
+                        <div>
+                            <label class="text-gray-700 tracking-wide text-[15px]">Role</label>
+                            {% if auth_user.role == 'SUPERADMIN' %}
+                            {% if auth_user.id == user.id %}
+                            <select title="role" id="status" name="selected_role" class="w-full text-base px-4 py-2 border-2 border-gray-300 focus:border-blue-500 block rounded-lg" disabled>
+                            <option {% if user.role == 'SUPERADMIN' %} selected {% endif %} value="SUPERADMIN" >Super Administrator</option>
+                            {% else %}
+                                <select title="role" id="status" name="selected_role" class="w-full text-base px-4 py-2 border-2 border-gray-300 focus:border-blue-500 block rounded-lg">
+                                {% endif %}
+                            {% else %}
+                            <select title="role" id="status" name="selected_role" class="w-full text-base px-4 py-2 border-2 border-gray-300 focus:border-blue-500 block rounded-lg" disabled>
+                            {% endif %}
+                                <option {% if user.role == 'MEMBER' %} selected {% endif %} value="MEMBER">Member</option>
+                                <option {% if user.role == 'ADMIN' %} selected {% endif %} value="ADMIN">Administrator</option>
+                            </select>
+                            
+                        </div>
+                        <!-- Dropdown Select Status -->
+                    </div>
+                </div>
+                <div class="flex justify-end items-center gap-5 mt-5">
+                    {% if auth_user.role == 'SUPERADMIN' %}
+                    <a href="{% url 'account:userManagement' %}" class="font-bold text-[#1E1D4C]">Discard</a>
+                    <button id="saveEditUser" type="submit" class="font-medium text-sm bg-[#7B5BFF] hover:bg-[#7054E0] text-[13px] px-10 py-3 rounded-lg text-white transition-all duration-500">Save</button>
+                    {% else %}{% endif %}
+                </div>
+            </form>
+        </div>
+        <!-- End Data User -->
+        <!-- Start Footer -->
+        <footer class="font-[poppins-regular] text-[12px] text-[#1E1D4C] ml-5 mr-5 flex justify-end">
+            Copyright &#169; 2023, KoTA 105
+        </footer>
+        <!-- End Footer -->
+    </div>
+</div>
+<script defer src="{% static 'js/popupSweetAlert2.js' %}?v={{ STATICFILES_TIMESTAMP }}"></script>
+<script src="{% static 'js/scriptsUser.js' %}?v={{ STATICFILES_TIMESTAMP }}"></script>
+{% endblock %}

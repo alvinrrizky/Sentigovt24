@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load compress %}
+    {% load static %}
+    {% compress css %}
+    <link rel="stylesheet" href="{% static 'css/output.css' %}">
+    {% endcompress %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+    <link rel="icon" href="{% static 'media/icons/Logo.svg' %}" type="image/icon type">
+    <title>SENTIGOV24 | Register</title>
+</head>
+
+<body>
+    <!-- Start Register -->
+    <section class="register" id="registerId">
+        <div class="registerContent" id="registerContentId">
+            <div class="bg-white md:grid md:grid-cols-2">
+                <div class="bg-gradient-to-br from-purple-700 to-blue-500 bg-pink-500 p-[120px] context h-screen bg-no-repeat hidden md:block"><img
+                        src="{% static 'media/icons/Phone2.svg' %}" alt="Phone2" /></div>
+                <div class="md:container md:px-40 mx-10">
+                    <div class="flex flex-col mt-[40px]">
+                        <div class="font-[Poppins-SemiBold] text-[45px] text-[#1E1D4C] mt-10 md:mt-0">Hello, Sentizens !</div>
+                        <div class="font-[Poppins-Regular] text-[15px] text-[#969696]">Join us to see Indonesian leaders</div>
+                        <form class="space-y-6" action="{% url 'account:register' %}" method="POST">
+                            {% csrf_token %}
+                            <div class="relative">
+                                <label class="font-[Poppins-Medium] ml-3 text-gray-700 tracking-wide text-[15px]">Email<span class="text-red-500"> *</span></label>
+                                <input {% if form.errors.email %} class="bg-red-200 w-full text-base px-4 py-2 border-2 border-red-500 focus:outline-none rounded-lg focus:border-indigo-500" {% endif %} class=" w-full text-base px-4 py-2 border-2 border-gray-300 focus:outline-none rounded-lg focus:border-indigo-500" type="email" name="email"placeholder="mail@gmail.com" required>
+                                <div {% if form.errors.email %} class="font-bold text-red-500 block" {% endif %} class="font-bold text-red-500 hidden">{{form.errors.email.0}}</div>
+                            </div>
+                            <div class="mt-8 content-center">
+                                <label class="font-[Poppins-Medium] ml-3 text-gray-700 tracking-wide text-[15px]">Name<span class="text-red-500"> *</span></label>
+                                <input {% if form.errors.first_name %} class="bg-red-200 w-full text-base px-4 py-2 border-2 border-red-500 focus:outline-none rounded-lg focus:border-indigo-500" {% endif %} class=" w-full text-base px-4 py-2 border-2 border-gray-300 focus:outline-none rounded-lg focus:border-indigo-500" type="text" name="first_name" placeholder="Enter your name" required>
+                                <div {% if form.errors.first_name %} class="font-bold text-red-500 block" {% endif %} class="font-bold text-red-500 hidden">{{form.errors.first_name.0}}</div>
+                            </div>
+                            <div class="mt-8 content-center">
+                                <label class="font-[Poppins-Medium] ml-3 text-gray-700 tracking-wide text-[15px]">Password<span class="text-red-500"> *</span></label>
+                                <input {% if form.errors.password1 %} class="bg-red-200 w-full text-base px-4 py-2 border-2 border-red-500 focus:outline-none rounded-lg focus:border-indigo-500" {% endif %} class="w-full content-center text-base px-4 py-2 border-2 rounded-lg border-gray-300 focus:outline-none focus:border-indigo-500" type="password" name="password1" placeholder="Enter your password" required>
+                                <div {% if form.errors.password1 %} class="font-bold text-red-500 block" {% endif %} class="font-bold text-red-500 hidden">{{form.errors.password1.0}}</div>
+                            </div>
+                            <div class="mt-8 content-center">
+                                <label class="font-[Poppins-Medium] ml-3 text-gray-700 tracking-wide text-[15px]">Confirm Password<span class="text-red-500"> *</span></label>
+                                <input {% if form.errors.password2 %} class=" bg-red-200 w-full text-base px-4 py-2 border-2 border-red-500 focus:outline-none rounded-lg focus:border-indigo-500" {% endif %} class="w-full content-center text-base px-4 py-2 border-2 rounded-lg border-gray-300 focus:outline-none focus:border-indigo-500" type="password" name="password2" placeholder="Enter your confirm password" required>
+                                <div {% if form.errors.password2 %} class="font-bold text-red-500 block" {% endif %} class="font-bold text-red-500 hidden">{{form.errors.password2.0}}</div>
+                            </div>
+                            <div>
+                                <button type="submit" class="w-full flex justify-center bg-gradient-to-r from-indigo-500 to-blue-600  hover:bg-gradient-to-l hover:from-blue-500 hover:to-indigo-600 text-gray-100 p-4  rounded-lg tracking-wide font-semibold  shadow-lg cursor-pointer transition ease-in duration-500">Register</button>
+                            </div>
+                        </form>
+                        <p class=" font-[Poppins-regular] flex flex-col items-center justify-center mb-30 text-center text-gray-500 md:mt-5 mt-12">
+                            <span>Have an account?</span>
+                            <a href="{% url 'account:login' %}" class="text-indigo-400 hover:text-blue-500 no-underline hover:no-underline cursor-pointer transition ease-in duration-300 font-bold">Log In</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End Register -->
+    <div class="font-[Poppins-Bold]" id="backButtonId">
+        <div class="absolute top-0 right-0 mt-4 mr-6 text-gray-600 hover:opacity-75 transition-opacity text-[20px]"><a
+                href="{% url 'home' %}">BACK</a></div>
+    </div>
+</body>
+
+</html>

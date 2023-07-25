@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}
+User Management
+{% endblock %}
+
+{% block content %}
+<div class="sm:pl-[100px] md:pl-[280px] px-6 pb-6 pt-24 ">
+    <div class="flex flex-col gap-5">
+        <!-- Start Header User Management -->
+        <header class="bg-white py-6 px-10 rounded-xl h-fit">
+            <div class="font-[poppins-medium] text-[20px] sm:text-[40px] text-[#1E1D4C]">User Management</div>
+            <hr class="border-[#C2C2C2] my-2 sm:my-5" />
+            <div class="flex flex-col sm:flex-row sm:gap-5 mt-4">
+                <div class='max-w-md'>
+                    <div class="relative flex items-center w-full h-9 mb-5 bg-white overflow-hidden border-2 border-[#C2C2C2] rounded-full">
+                        <div class="grid place-items-center h-full w-12 text-gray-300">
+                            <img class="h-5 w-5" src="{% static 'media/icons/search.svg' %}" alt="search">
+                        </div>
+                        <input id="searchQuery" class="h-full w-full outline-none text-sm text-gray-700 pr-4 border-none border-transparent focus:border-transparent focus:ring-0" type="text" name="search" placeholder="Search" />
+                    </div>
+                </div>
+                <div class="flex justify-center">
+                    <button onclick="getDataUser(1)" class="font-[poppins-light] flex font-medium justify-center h-[28px] py-[18px] px-8 text-[13px] items-center bg-[#7B5BFF] hover:bg-[#7054E0] text-white rounded-full tracking-wide cursor-pointer transition-all duration-500">Search</button>
+                </div>
+            </div>
+        </header>
+        <!-- End Header User Management -->
+        <section class="bg-white p-6 rounded-xl h-fit">
+            <div class="relative overflow-x-auto">
+                <!-- Start Table User Management -->
+                <table class="w-full text-sm text-left text-gray-500 mb-5">
+                    <thead class="text-xs text-gray-700 uppercase border-b">
+                        <tr>
+                            <th scope="col" class="font-[Inter-Semibold] text-[12px] px-6 py-3 text-center">
+                                No
+                            </th>
+                            <th scope="col" class="font-[Inter-Semibold] text-[12px] mx-36 py-3 text-center">
+                                Name User
+                            </th>
+                            <th scope="col" class="font-[Inter-Semibold] text-[12px] py-3 text-center">
+                                <div x-data="{ isOpen: false }" class="relative inline-block">
+                                    <!-- Dropdown toggle button -->
+                                    <button @click="isOpen = !isOpen" class="itemTabel border-2 rounded-full text-[12px] relative z-10 flex justify-between items-center py-2 w-52 px-3 uppercase">
+                                        <img class="w-5 h-5 mx-1 mr-2" src="{% static 'media/icons/status.svg' %}" alt="Status" />
+                                        <span class="mx-1">Role</span>
+                                        <img class="w-5 h-5 mx-1" src="{% static 'media/icons/dropSentiment.svg' %}" alt="Drop Sentiment" />
+                                    </button>
+                                    <!-- Dropdown menu -->
+                                    <div 
+                                        x-show="isOpen" 
+                                        @click="isOpen = false"
+                                        @click.away="isOpen = false"
+                                        x-transition:enter="transition ease-out duration-100"
+                                        x-transition:enter-start="opacity-0 scale-90"
+                                        x-transition:enter-end="opacity-100 scale-100"
+                                        x-transition:leave="transition ease-in duration-100"
+                                        x-transition:leave-start="opacity-100 scale-100"
+                                        x-transition:leave-end="opacity-0 scale-90"
+                                        class="absolute right-0 z-20 w-30 py-2 mt-2 overflow-hidden origin-top-right bg-white rounded-xl shadow-xl border-2">
+                                        <a href="#" class="font-[Inter-Regular] text-[12px] block mx-3 rounded-lg py-3 capitalize transition-colors duration-300 transform hover:bg-gray-100">
+                                            All Role
+                                        </a>
+                                        <a href="#" class="font-[Inter-Regular] text-[12px] block mx-3 rounded-lg py-3 capitalize transition-colors duration-300 transform hover:bg-gray-100">
+                                            Administrator
+                                        </a>
+                                        <a href="#" class="font-[Inter-Regular] text-[12px] block mx-3 rounded-lg py-3 capitalize transition-colors duration-300 transform hover:bg-gray-100">
+                                            Member
+                                        </a>
+                                    </div>
+                                </div>
+                            </th>
+                            <th scope="col" class="font-[Inter-Semibold] text-[12px] py-3 text-center">
+                                Delete
+                            </th>
+                            <th scope="col" class="font-[Inter-Semibold] text-[12px] px-6 py-3 text-center">
+                                Edit
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body"></tbody>
+                </table>
+                <!-- End Table User Management -->
+            </div>
+            <!-- Start Pagination -->
+            <div class="flex items-center justify-end">
+                <div class="items-center">
+                    <div class="pagination">
+                        <button id="prev-button" class="font-[Inter-Regular] px-2 py-1 text-sm text-gray-500 rounded-md hover:bg-gray-400 hover:text-white">Prev</button>
+                        <span id="page-buttons"></span>
+                        <button id="next-button" class="font-[Inter-Regular] px-2 py-1 text-sm text-gray-500 rounded-md hover:bg-gray-400 hover:text-white">Next</button>
+                    </div>
+                </div>
+            </div>
+            <!-- End Pagination -->
+        </section>
+        <!-- Start Footer -->
+        <footer class="font-[poppins-regular] text-[12px] text-[#1E1D4C] ml-5 mr-5 flex justify-end">
+            Copyright &#169; 2023, KoTA 105
+        </footer>
+        <!-- End Footer -->
+    </div>
+</div>
+<script defer src="{% static 'js/scriptsUser.js' %}"></script>
+{% endblock %}
